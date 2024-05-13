@@ -10,8 +10,12 @@ import java.util.List;
 @RestController
 public class EmpController {
 
-    @Autowired
-   EmpService empService;
+    final
+    EmpService empService;
+
+    public EmpController(EmpService empService) {
+        this.empService = empService;
+    }
 
     @GetMapping("employees")
     public List<Employee> getAllEmployees() {
@@ -25,13 +29,20 @@ public class EmpController {
 
     @PostMapping("employees")
     public String addEmployee(@RequestBody Employee employee) {
-       // employees.add(employee);
         return empService.createEmployee(employee);
     }
 
     @DeleteMapping("employees/{id}")
     public String removeEmployee(@PathVariable Long id) {
         if (empService.deleteEmployee(id)) {
+            return "Deleted Successfully";
+        }
+        return "Deleted Failure";
+    }
+
+    @DeleteMapping("employees")
+    public String removeEmployees() {
+        if (empService.deleteAllEmployees()) {
             return "Deleted Successfully";
         }
         return "Deleted Failure";

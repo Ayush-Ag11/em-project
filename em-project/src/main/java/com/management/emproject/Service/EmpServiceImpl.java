@@ -18,10 +18,9 @@ public class EmpServiceImpl implements EmpService {
     private EmployeeRepository employeeRepository;
 
 
-
     @Override
     public String createEmployee(Employee employee) {
-        EmployeeEntity employeeEntity  = new EmployeeEntity();
+        EmployeeEntity employeeEntity = new EmployeeEntity();
         BeanUtils.copyProperties(employee, employeeEntity);
         employeeRepository.save(employeeEntity);
         return "Employee Data Saved Successfully";
@@ -44,32 +43,40 @@ public class EmpServiceImpl implements EmpService {
     }
 
     @Override
-public Employee readEmployee(Long id) {
-    Optional<EmployeeEntity> emp = employeeRepository.findById(id);
-    if (emp.isPresent()) {
-        EmployeeEntity employeeEntity = emp.get();
-        Employee employee = new Employee();
-        employee.setName(employeeEntity.getName());
-        employee.setEmail(employeeEntity.getEmail());
-        employee.setAge(employeeEntity.getAge());
-        employee.setId(employeeEntity.getId());
-        employee.setPhone(employeeEntity.getPhone());
-        return employee;
-    } else {
-        return null; // Return null if the employee with the given id is not found
+    public Employee readEmployee(Long id) {
+        Optional<EmployeeEntity> emp = employeeRepository.findById(id);
+        if (emp.isPresent()) {
+            EmployeeEntity employeeEntity = emp.get();
+            Employee employee = new Employee();
+            employee.setName(employeeEntity.getName());
+            employee.setEmail(employeeEntity.getEmail());
+            employee.setAge(employeeEntity.getAge());
+            employee.setId(employeeEntity.getId());
+            employee.setPhone(employeeEntity.getPhone());
+            return employee;
+        } else {
+            return null; // Return null if the employee with the given id is not found
+        }
     }
-}
 
     @Override
     public boolean deleteEmployee(Long id) {
         EmployeeEntity emp = employeeRepository.findById(id).get();
-       employeeRepository.delete(emp);
-       return true;
+        employeeRepository.delete(emp);
+        return true;
+    }
+
+    @Override
+    public boolean deleteAllEmployees() {
+        List<EmployeeEntity> employeeList = employeeRepository.findAll();
+        employeeRepository.deleteAll(employeeList);
+        return true;
     }
 
     @Override
     public boolean updateEmployee(Long id, Employee employee) {
         EmployeeEntity emp = employeeRepository.findById(id).get();
+        emp.setName(employee.getName());
         emp.setEmail(employee.getEmail());
         emp.setAge(employee.getAge());
         emp.setPhone(employee.getPhone());

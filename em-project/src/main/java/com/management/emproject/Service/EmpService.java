@@ -12,6 +12,6 @@ public interface EmpService {
     List<Employee> readEmployees();
     boolean deleteEmployee(Long id);
     boolean updateEmployee(Long id, Employee employee);
-
+    boolean deleteAllEmployees();
    Employee readEmployee(Long id);
 }

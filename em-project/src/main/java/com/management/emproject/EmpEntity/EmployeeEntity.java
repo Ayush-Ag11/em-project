@@ -1,9 +1,6 @@
 package com.management.emproject.EmpEntity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -11,14 +8,14 @@ import lombok.Data;
 @Table(name = "employee_db")
 public class EmployeeEntity {
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String Name;
+    private String name;
 
-    private int Age;
+    private int age;
 
-    private String Email;
+    private String email;
 
-    private String Phone;
+    private String phone;
 }
