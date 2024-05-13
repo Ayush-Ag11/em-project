@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Employee {
 
+    private Long id;
+
     private String Name;
 
     private int Age;
@@ -17,5 +19,4 @@ public class Employee {
 
     private String Phone;
 
-    private int id;
 }

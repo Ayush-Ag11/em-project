@@ -2,7 +2,7 @@ package com.management.emproject.Controller;
 
 import com.management.emproject.Model.Employee;
 import com.management.emproject.Service.EmpService;
-import com.management.emproject.Service.EmpServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,11 +10,17 @@ import java.util.List;
 @RestController
 public class EmpController {
 
-   EmpService empService = new EmpServiceImpl();
+    @Autowired
+   EmpService empService;
 
     @GetMapping("employees")
     public List<Employee> getAllEmployees() {
         return empService.readEmployees();
+    }
+
+    @GetMapping("employees/{id}")
+    public Employee getEmployeeById(@PathVariable Long id) {
+        return empService.readEmployee(id);
     }
 
     @PostMapping("employees")
@@ -24,10 +30,18 @@ public class EmpController {
     }
 
     @DeleteMapping("employees/{id}")
-    public String removeEmployee(@PathVariable int id) {
+    public String removeEmployee(@PathVariable Long id) {
         if (empService.deleteEmployee(id)) {
             return "Deleted Successfully";
         }
         return "Deleted Failure";
+    }
+
+    @PutMapping("employees/{id}")
+    public String updateEmployee(@PathVariable Long id, @RequestBody Employee employee) {
+        if (empService.updateEmployee(id, employee)) {
+            return "Updated Successfully";
+        }
+        return "Updated Failure";
     }
 }

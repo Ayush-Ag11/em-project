@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmpServiceImpl implements EmpService {
@@ -28,17 +29,51 @@ public class EmpServiceImpl implements EmpService {
 
     @Override
     public List<Employee> readEmployees() {
-        List<Employee> employeeList = employeeRepository.findAll();
+        List<EmployeeEntity> employeeList = employeeRepository.findAll();
         List<Employee> employees = new ArrayList<>();
-        for (Employee employeeEntity : employeeList) {
-
+        for (EmployeeEntity employeeEntity : employeeList) {
+            Employee emp = new Employee();
+            emp.setName(employeeEntity.getName());
+            emp.setEmail(employeeEntity.getEmail());
+            emp.setAge(employeeEntity.getAge());
+            emp.setId(employeeEntity.getId());
+            emp.setPhone(employeeEntity.getPhone());
+            employees.add(emp);
         }
         return employees;
     }
 
     @Override
-    public boolean deleteEmployee(int id) {
-       employees.remove(id);
+public Employee readEmployee(Long id) {
+    Optional<EmployeeEntity> emp = employeeRepository.findById(id);
+    if (emp.isPresent()) {
+        EmployeeEntity employeeEntity = emp.get();
+        Employee employee = new Employee();
+        employee.setName(employeeEntity.getName());
+        employee.setEmail(employeeEntity.getEmail());
+        employee.setAge(employeeEntity.getAge());
+        employee.setId(employeeEntity.getId());
+        employee.setPhone(employeeEntity.getPhone());
+        return employee;
+    } else {
+        return null; // Return null if the employee with the given id is not found
+    }
+}
+
+    @Override
+    public boolean deleteEmployee(Long id) {
+        EmployeeEntity emp = employeeRepository.findById(id).get();
+       employeeRepository.delete(emp);
        return true;
+    }
+
+    @Override
+    public boolean updateEmployee(Long id, Employee employee) {
+        EmployeeEntity emp = employeeRepository.findById(id).get();
+        emp.setEmail(employee.getEmail());
+        emp.setAge(employee.getAge());
+        emp.setPhone(employee.getPhone());
+        employeeRepository.save(emp);
+        return true;
     }
 }

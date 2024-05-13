@@ -10,6 +10,8 @@ public interface EmpService {
 
     String createEmployee(Employee employee);
     List<Employee> readEmployees();
-    boolean deleteEmployee(int id);
+    boolean deleteEmployee(Long id);
+    boolean updateEmployee(Long id, Employee employee);
 
+   Employee readEmployee(Long id);
 }

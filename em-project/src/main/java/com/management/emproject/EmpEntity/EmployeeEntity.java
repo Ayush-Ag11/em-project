@@ -10,6 +10,10 @@ import lombok.Data;
 @Entity
 @Table(name = "employee_db")
 public class EmployeeEntity {
+    @Id
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    private Long id;
+
     private String Name;
 
     private int Age;
@@ -17,8 +21,4 @@ public class EmployeeEntity {
     private String Email;
 
     private String Phone;
-
-    @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private int id;
 }
