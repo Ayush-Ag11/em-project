@@ -4,7 +4,6 @@ import com.management.emproject.EmpEntity.EmployeeEntity;
 import com.management.emproject.EmployeeRepository.EmployeeRepository;
 import com.management.emproject.Model.Employee;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,8 +13,11 @@ import java.util.Optional;
 @Service
 public class EmpServiceImpl implements EmpService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmpServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
 
     @Override
@@ -61,10 +63,16 @@ public class EmpServiceImpl implements EmpService {
 
     @Override
     public boolean deleteEmployee(Long id) {
-        EmployeeEntity emp = employeeRepository.findById(id).get();
-        employeeRepository.delete(emp);
-        return true;
+        Optional<EmployeeEntity> optionalEmployee = employeeRepository.findById(id);
+        if (optionalEmployee.isPresent()) {
+            EmployeeEntity emp = optionalEmployee.get();
+            employeeRepository.delete(emp);
+            return true;
+        } else {
+            return false;
+        }
     }
+
 
     @Override
     public boolean deleteAllEmployees() {
@@ -75,12 +83,17 @@ public class EmpServiceImpl implements EmpService {
 
     @Override
     public boolean updateEmployee(Long id, Employee employee) {
-        EmployeeEntity emp = employeeRepository.findById(id).get();
-        emp.setName(employee.getName());
-        emp.setEmail(employee.getEmail());
-        emp.setAge(employee.getAge());
-        emp.setPhone(employee.getPhone());
-        employeeRepository.save(emp);
-        return true;
+        Optional<EmployeeEntity> optionalEmployee = employeeRepository.findById(id);
+        if (optionalEmployee.isPresent()) {
+            EmployeeEntity emp = optionalEmployee.get();
+            emp.setName(employee.getName());
+            emp.setEmail(employee.getEmail());
+            emp.setAge(employee.getAge());
+            emp.setPhone(employee.getPhone());
+            employeeRepository.save(emp);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
